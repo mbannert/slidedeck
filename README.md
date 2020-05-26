@@ -4,7 +4,7 @@ Presentations &amp; Talks (slides) ...
 
 ## Overview
 
-|Location | Event   | Datum   | Description   | Link   |
+|Location | Event   | Date   | Description   | Link   |
 |---|---|---|---|---|
 |   |   |   |   |   |
 |   |   |   |   |   |
