@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Hacking (Social Media) Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Matthias Bannert (@whatsgoodio)" />
+    <meta name="date" content="2019-11-28" />
+    <link href="libs/remark-css/robot-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="more.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Hacking (Social Media) Data
+## Why Online Researchers Should Learn to Code
+### Matthias Bannert (<span class="citation">@whatsgoodio</span>)
+### ETH Zurich
+### 2019-11-28
+
+---
+
+
+
+
+
+## Outline
+
+1. Motivation to Code in Research
+2. Data Driven Examples (mostly visualization)
+3. How to Get Started
+4. A DIY example
+
+---
+
+## hacking_data:~$ whoami
+
+### Matthias Bannert ([@whatsgoodio](https://twitter.com/whatsgoodio))
+
+.pull-left[
+
+- IT Lead @KOF, ETH Zurich 
+- PhD in Economics 
+- 20+ years programming experience
+- course material: https://github.com/mbannert/smof
+]
+
+.pull-right[
+
+&lt;img src="avatar.jpg"&gt;
+
+]
+
+
+---
+
+class: center, middle
+
+## Why Would a Researcher Want to Program? 
+
+&lt;img src="busy.png" width="650px"&gt;
+
+
+---
+
+
+
+class: center, middle
+
+## Social Media Data: Feathers or Bricks?
+
+---
+
+class: center, middle
+
+# 700 000 000+ &lt;br&gt;
+## number of tweets per day (!)
+
+---
+
+## Images
+
+&lt;img src="chewbacca.png" height="500px"&gt;
+
+---
+
+## Twitter: Most Popular Emoji within last 30 sec
+
+&lt;iframe width="800" height="450" src="emoji.html"&gt;&lt;/iframe&gt;
+
+source: [Oversable HQ Twitter Emoji Race ](https://observablehq.com/@mbostock/twitter-emoji-race)
+
+---
+
+## Emoji Detection /w Tensorflow 
+
+.pull-left[
+&lt;a href="https://twitter.com/bourdakos1/status/1125436388026060801"&gt;&lt;img src="tensorflow.png" height="450px"&gt;&lt;/a&gt;
+
+]
+
+
+.pull-right[
+libraries: 
+
+- [Cloud Annotation](https://github.com/cloud-annotations/training)
+
+- [tensorflow](https://www.tensorflow.org/)
+
+]
+
+
+---
+
+class: center, middle
+
+## How to Deal With Text, Images and Videos from Millions of Users?
+
+---
+
+## Simulation &amp; Animation
+
+- [Simulated Solutions (Street Traffic)](https://twitter.com/BrentToderian/status/1192568535009988608)
+
+- [All Shots in 2018 NCAA Season](https://twitter.com/CraigTaylorGIS/status/1159779288733880321)
+
+---
+
+## Visualization Examples: Chicks Rule Social Media
+
+&lt;a href="https://informationisbeautiful.net/visualizations/chicks-rule/"&gt;&lt;img src="chicks.png" width="750px"&gt;&lt;/a&gt;
+
+
+---
+
+class: center, middle
+
+## Turning Text Into Data
+
+---
+
+## Visualization Examples
+
+![](index_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualization Examples: Simple Wordcloud
+
+![](index_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualization Examples: Wordcloud on Steroids
+
+
+![](index_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualization Examples: Cluster Analysis
+
+![](index_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualization Examples: Keyness
+
+![](index_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+    
+
+---
+
+## Why Would a Researcher Want to Program? 
+
+
+- Access to Data Sources (**A**pplication **P**rogramming **I**nterfaces) 
+
+
+
+---
+
+
+## Why Would a Researcher Want to Program? 
+
+
+- Access to Data Sources (**A**pplication **P**rogramming **I**nterfaces) 
+
+- Visualization
+
+
+---
+
+
+## Why Would a Researcher Want to Program? 
+
+
+- Access to Data Sources (**A**pplication **P**rogramming **I**nterfaces) 
+
+- Visualization
+
+- Text Mining &amp; Regular Expressions
+
+---
+
+## Why Would a Researcher Want to Program? 
+
+
+- Access to Data Sources (**A**pplication **P**rogramming **I**nterfaces) 
+
+- Visualization
+
+- Text Mining &amp; Regular Expressions
+
+- Reproducibility
+
+
+
+---
+
+
+## Why Would a Researcher Want to Program? 
+
+
+- Access to Data Sources (**A**pplication **P**rogramming **I**nterfaces) 
+
+- Visualization
+
+- Text Mining &amp; Regular Expressions
+
+- Reproducibility
+
+- Code as Communication Channel
+
+- ...
+
+
+---
+
+
+class: center, middle
+
+## Where to Start ?
+
+
+---
+
+
+## Most Popular Scripting Languages in Data Science
+
+.pull-left[
+&lt;img src="R.png"&gt;
+
+- [R Language for Statistical Computing](https://r-project.org)
+- [Stackoverflow questions](https://stackoverflow.com/questions/tagged/r): 300K+
+- Recommended Editor: [R Studio IDE](https://rstudio.com/products/rstudio/)
+- Extensions
+  - [CRAN](https://cran.r-project.org/) Repository /w ~15K Extension packages
+  - [Shiny Web Framework](http://shiny.rstudio.com/)
+- Trend: from Domain Specific to General Purpose
+- Biggest Conference: useR! 
+
+]
+
+.pull-right[
+&lt;img src="python.png"&gt;
+
+- Python [2](https://www.python.org/downloads/release/python-272/) &amp; [3](https://www.python.org/)
+- [Stackoverflow questions](https://stackoverflow.com/questions/tagged/python): ~1.3M+
+- Recommended Editor: [Visual Studio Code /w Jupyter Notebooks](https://code.visualstudio.com/docs/python/jupyter-support)
+- Extensions
+  - [anaconda](https://www.anaconda.com/)
+  - [pandas](https://pandas.pydata.org/)
+  - [numpy](https://numpy.org/)
+  - [sciPy](https://www.scipy.org/)
+- Most Popular Language in Deep Learning and Machine Learning
+- Trend: General Purpose /w Scientific Extensions
+
+]
+
+---
+
+## A Do-It-Yourself Example: Text Mining Twitter
+
+1. Understand How to Get Data
+2. Understand How to Turn Text into Data
+3. Run Code https://github.com/mbannert/smof/tweets_demo.R
+
+---
+
+    
+## Don't Believe Everything You See on Social Media
+    
+&lt;a href="https://twitter.com/Slimkally/status/1188828753834790912?s=20"&gt;&lt;img src="dontbelieve.png" width="600px"&gt;&lt;/a&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

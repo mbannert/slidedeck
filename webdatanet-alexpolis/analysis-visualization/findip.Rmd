@@ -1,0 +1,43 @@
+---
+title: "findIp"
+author: "mbannert"
+date: "29 Sep 2014"
+output: html_document
+---
+
+```{r,echo=FALSE}
+some_server <- "129.132.27.202"
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+source("geoIP.R")
+library(ggmap) # talk to google maps
+library(ggplot2)
+ 
+where_is_ethz <- getGeoIPfromTelize(some_server)
+where_is_athens <- getGeoIPfromTelize("185.16.164.123")
+myip <- getMyIp()
+
+whereami <- getGeoIPfromTelize(myip)
+
+# summarize our coordinates to facilitate ggplot2 use
+position_df <- data.frame(location = c("Zurich","Athens","Alexandroupolis"),
+                          long = c(where_is_ethz$longitude,
+                                   where_is_athens$longitude,
+                                   whereami$longitude),
+                          lat = c(where_is_ethz$latitude,
+                                  where_is_athens$latitude,
+                                  whereami$latitude))
+
+
+map <- get_map(location = 'europe', zoom = 4)
+g <- ggmap(map, fullpage = TRUE)
+
+g + geom_point(data = position_df, aes(long,lat),
+               colour = c("darkblue","darkblue","red"),
+               size = c(4,4,4),alpha = c(.4,.4,.6)) +
+  geom_path(data = position_df, aes(long,lat),linetype = 2)
+
+```
+

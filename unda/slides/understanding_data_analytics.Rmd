@@ -1,0 +1,452 @@
+---
+title: "Understanding Data Analytics I"
+subtitle: "plan, apply and scale"
+author: "Matthias Bannert"
+date: "November 2017"
+output: ioslides_presentation
+widescreen: true
+smaller: true
+runtime: shiny
+---
+
+## :~$ whoami 
+
+**Matthias Bannert**
+
+- current occupation: data scientist / software developer @ETH Zurich
+- occasional consultant 
+- studied economics @UniKN, PhD @ETHZ: partly economics, mostly methodology + stats
+- CTO of Swiss startup *fanpictor* from 2012-2014
+- open source software projects: timeseriesdb, tstools, dropR, RAdwords
+
+<div align="right">
+<img src="images/mba_profile.png" alt="matthias bannert" style="width: 180px;"/></div>
+
+## Background Poll
+
+```{r,echo=FALSE}
+library(grid)
+library(shiny)
+source("bullet.R")
+
+fluidPage(sidebarLayout(sidebarPanel(
+  numericInput("members", "Number of participants", 10),
+  numericInput("prog", "Programming", 10),  
+  numericInput("data", "Work With Data", 10),
+  numericInput("rstats", "R Statistical Language", 10)
+  ),
+  mainPanel(
+    renderPlot({
+      techavg <- mean(c(input$prof,
+                        input$data,
+                        input$stats) / input$members)*100
+  df1 <- data.frame(units = c("Prog(%)","data(%)","R(%)"),
+                    low = c(25,25,25),
+                    mean = c(50,50,50),
+                    high = c(100,100,100),
+                    target = c(techavg,techavg,techavg),
+                    value = c(100*(input$prog/input$members),
+                              100*(input$data/input$members),
+                              100*(input$rstats/input$members)
+                              )
+                    )
+
+  g <- gridBulletGraphH(df1,bcol = c("#999999","#CCCCCC","#E1E1E1"),
+                   vcol = "#333333",font = 20)
+
+  g + title(paste("Usage of Technologies Among Participants", sep=" "))
+
+})  
+
+
+    )
+  ))
+
+```
+
+
+
+## The Field Formerly Known as Statistics
+
+- Numbers / Methods
+- Programming
+- Communication / Visualization
+- Integration / Scaling 
+
+
+
+## Overview
+
+- Day 1: Organize
+	- Introduction
+	- Data Generating Processes
+	- Types of Data
+	- Manage and Archive
+- Day 2: Process and Communicate
+	- Visualization
+	- Methodology
+
+
+
+## Inspiration: Illustrate
+
+<img src="images/mobile_evolution.png" width="650" alt="mobile evolution">
+
+## Inspiration: Relation
+[Million lines of code](http://www.informationisbeautiful.net/visualizations/million-lines-of-code/)
+<img src="images/million_lines.png" width="650" alt="million lines">
+
+## Inspiration: Choropleth
+
+<img src="images/five_percent.png" width="650" alt="five percent">
+
+
+## Inspiration: Draw R
+
+<img src="images/obama.png" width="650" alt="obama years">
+
+[You Draw It! (NY Times)](https://www.nytimes.com/interactive/2017/01/15/us/politics/you-draw-obama-legacy.html?mcubz=0)
+
+## When City Bike are faster than cabs
+
+https://www.r-bloggers.com/when-are-citi-bikes-faster-than-taxis-in-new-york-city/
+
+## Microsleep...
+
+[microsleep detection](https://www.researchgate.net/publication/311422254_Detection_of_microsleep_events_in_a_car_driving_simulation_study_using_electrocardiographic_features/fulltext/58455b5308ae61f75dd772cc/311422254_Detection_of_microsleep_events_in_a_car_driving_simulation_study_using_electrocardiographic_features.pdf)
+
+## 10K for the best datasets
+
+https://www.kaggle.com/datasets
+
+## Inspiration: Dynamic Reporting / Presentations
+
+- create report
+- dynamic figures & tables
+- html, pdf, docx 
+- or [dynamically create .pptx reports](http://mran.microsoft.com/web/packages/mschart/vignettes/introduction.html)
+
+
+## Data Analytics Toolbox
+
+<img src="images/python.png" width="200">
+<img src="images/git.png">
+<img src="images/github.png">
+<img src="images/azure.png" width="130">
+<img src="images/julia.png" width="130">
+<img src="images/mongodb.png" width="130">
+<img src="images/docker.png">
+<img src="images/rstats.png" height="80">
+<img src="images/rstudio.png" width="130">
+<img src="images/spark.png" width="130">
+<img src="images/cassandra.png" width="140">
+<img src="images/highcharts.png" width="140">
+<img src="images/hadoop.png" width="130">
+<img src="images/tableau.png" width="130">
+<img src="images/pandas.png" width="130">
+<img src="images/aws.png">
+<img src="images/matlab.png" height="80">
+<img src="images/d3.png" height="80">
+<img src="images/postgresql.png" width="150">
+
+<p style="font-size: 10px;">Quelle: all Logos taken from their respective companies' website.</p>
+
+<!-- mo js libs (free) to the list -->
+
+## The R Language for Statistical Computing
+
+- First appeared in 1993 
+- designed by Ihaka and Gentleman
+- Last Stable Release: 3.4.1
+
+**Why R?**
+
+- interpreted language
+- interfaces to many compiled languages
+- easy to learn
+- open source, license cost free
+- backed by Microsoft
+- one-of-a-kind ecosystem, wide range of packages
+
+
+
+
+## The R Ecosystem
+
+- R Interpreter
+- [CRAN Repository /w 10K+ packages](https://cran.r-project.org/)
+- [CRAN Task Views](https://cran.r-project.org/web/views/)
+- Community: [stackoverflow](https://stackoverflow.com/questions/tagged/r), Mailinglist, ...
+- R Studio IDE / R Studio Server
+
+## Your R Studio Servers
+
+- Server 1: 35.156.175.91:8787 
+- Server 2: 18.194.127.151:8787
+- user: user1 ... user10
+- password: autonatic
+
+- use Google Chrome or Firefox for best experience, avoid IE
+
+## The R Studio IDE
+
+- Switch to LTR Layout
+- Console vs. Scripting window 
+- comments
+- short cut cmd+enter: run selection
+- short cut ctrl+1, ctrl+2: switch windows
+- short cut ctrl+L: clear console screen
+- short cut command+D: multiple cursors @instances
+- file explorer
+- plot window
+- .Rproj
+
+
+
+## Basic R Objects
+
+- vector
+- matrix
+- data.frame
+- list
+
+## Brackets and braces 
+
+- **[row,col]**: Index
+- **{}**: function or loop body
+- **()**: function parameters
+
+## Basic functions I
+
+- ls()
+- rm()
+- c()
+- matrix()
+- data.frame()
+- list()
+
+**getting help**: ?function name
+
+
+## Basic functions II
+
+- head()
+- tail()
+- str()
+- function()
+- lapply()
+- data()
+
+**getting help**: ?function name
+
+
+## Before you start ...  
+
+<img src="images/knigge.png">
+
+
+## Good habits: Snakes ... 
+
+- i_am_a_snake
+
+<div align="right">
+<img src="images/snake.png" style="width: 400px;"/></div>
+
+
+## and camels
+
+- jeSuisUnCamel
+
+<div align="right">
+<img src="images/camel.gif" style="width: 400px;"/></div>
+
+
+## Task I: Working on a built-in dataset
+
+1. How many observations does the dataset mtcars have?
+2. What's the miles-per-gallon average, median?
+3. Which car does consume the least fuel? 
+4. Which is the car the least fuel by cylinders?
+5. How is mpg distributed?
+6. Why does solving analytics exercises through programming make sense?
+
+
+## Summary I 
+
+- scripting language is good start
+- understanding a language helps to remember syntax
+- many tasks can be solved w/o database, larger stack
+- programming makes tasks scalable and reproducible
+
+## Getting Started
+
+```
+"Premature optimization is the root of all evil."
+
+```
+<div align="right">Donald Knuth</div>
+
+
+
+# How About Real Data ?
+
+## Data Generating Processes: Simulation
+
+**Why?**
+
+- Form Expectations (Proposals / Grants)
+- Detectability of problems
+- Analyzing complex systems 
+
+study: http://ieeexplore.ieee.org/document/1622367/?reload=true
+
+## Simulation
+
+```{r}
+# RNG
+rnorm(10,0,1)
+```
+- What do you get?
+- Compare and discuss what happens?
+
+```{r,eval=FALSE}
+set.seed(123)
+rpois(20,5)
+```
+
+
+
+
+<div align="right">
+<img src="images/scraping.png" style="width: 400px;"/><br />
+<p style="font-size: 10px;">source: youtube, spaceballs</p>
+</div>
+
+## A Word on APIs
+
+- REST popular on the web
+- SOAP a bit more old fashioned, but still
+used in B2B often
+- APIs are an easy choices when receiving third party data
+    - can be automatically processes
+    - conflict with security policies
+
+## Example Yahoo Finance API
+
+```{r, eval=FALSE}
+library(quantmod)
+getSymbols(c("BMW.DE","AUDVF","VOW.DE"), src = "yahoo")
+```
+- wrapper around web based API calls
+
+## Task II - Discussion: Security
+
+Discuss in smaller groups: 
+
+- Does using scripts to access the web conflict with your department's policies? 
+- What would be a good option to receive 3rd party data?
+- How could 3rd party data be merged with internal data?
+- Where do you stand on cloud computing? 
+
+# DGPs and Resulting Types of Datasets
+
+
+## Types of datasets: time series
+
+```{r}
+ts2 <- ts(rnorm(20),
+          start = c(1995,1),
+          frequency = 4)
+ts2
+```
+
+examples: monthly revenues over time, stocks, aggregated log files
+
+
+
+## Types of datasets: cross sectional data
+
+```{r}
+head(mtcars)
+```
+
+- multiple variables
+- one period
+
+
+## Types of datasets: panel data
+
+- multiple variables
+- longitudinal data 
+- e.g. German Socio-Economic Panel (GSOEP)
+
+
+## Nested data structures
+
+```{r}
+l <- list()
+l$element1 <- 2
+l$element2 <- head(mtcars,4)
+l
+```
+
+examples: meta information, sector classification (hierarchical), GDP components, translations, attributes, properties, [Geo spatial data](https://github.com/mbannert/maps/blob/master/ch_bfs_regions.geojson)
+
+
+## Task III: Dataset types
+
+Represent each of the following dataset types using R: 
+
+- time series
+- cross section
+- panel
+- a nested structure.
+
+Please suggest an in-memory representation and a file based representation. 
+
+
+## A Short Note On Data Types in R
+
+- character
+- numeric
+- factor (be warned of stringsAsFactor = T)
+- ... 
+
+
+## Data Management
+
+**storage**
+
+- file based
+- database
+    - relational
+    - non-relational
+    - hybrid solutions
+- centralized / decentralized 
+
+**granularity**
+
+- micro data / on-the-fly computation (e.g. OLAP cubes)
+- aggregated data 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

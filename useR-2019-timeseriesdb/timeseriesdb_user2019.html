@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>timeseriesdb</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Matthias Bannert (@whatsgoodio)" />
+    <meta name="date" content="2019-07-12" />
+    <link href="libs/remark-css/robot-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# timeseries<strong>db</strong>
+## Manage, Process and Archive Time Series with R and PostgreSQL
+### Matthias Bannert (<span class="citation">@whatsgoodio</span>)
+### ETH Zurich
+### 2019-07-12
+
+---
+
+
+&lt;!-- 
+framework to map R ts objects to PostgreSQL KVP + relations.
+talk's not only about the timeseriesdb approach does it, but
+
+--&gt;
+
+
+
+
+---
+
+class: center, middle
+
+![johnny](johnnyrrr.jpg)
+
+
+---
+
+class: center, middle
+
+### Why ?
+
+---
+
+class: center, middle
+
+### 1. Long Lived Data Pipelines
+
+---
+
+## Issues /w File Based Management of Time Series
+
+![excel](excel.jpg)
+
+- (-) keys may be redundant across files
+- (-) lack of reasonable conventions for file naming
+
+=&gt; constraints are hard to implement
+
+---
+
+## timeseriesdb: Store Time Series
+
+
+```r
+library(timeseriesdb)
+
+con &lt;- createConObj("mbannert",
+                    "postgres",
+                    "localhost",
+                    passwd = "")
+
+lots &lt;- list(ts1 = ts(rnorm(100), start = c(1990,1), freq = 4),
+             ts2 = ts(rnorm(135), start = c(1994,3), freq = 12)
+
+storeTimeSeries(con, lots)
+```
+
+- list of time series
+- unique identifiers = list names
+
+
+---
+
+## timeseriesdb: Read Time Series
+
+
+```r
+library(timeseriesdb)
+
+con &lt;- createConObj("mbannert",
+                    "postgres",
+                    "localhost",
+                    passwd = "")
+
+# returns a list, in order to keep class of output the same. 
+tsl &lt;- readTimeSeries(con,"ch.kof.barometer")
+names(tsl)
+```
+
+```
+## [1] "ch.kof.barometer"
+```
+
+```r
+class(tsl)
+```
+
+```
+## [1] "list"   "tslist"
+```
+
+```r
+class(tsl$ch.kof.barometer)
+```
+
+```
+## [1] "ts"
+```
+
+---
+
+## timeseriesdb: reading multiple series
+
+--
+
+```r
+# key vectors
+tsl &lt;- readTimeSeries(con,
+                      c("ch.kof.barometer",
+                        "ch.kof.mpc"))
+```
+--
+
+
+```r
+# by regular expression
+cpi &lt;- readTimeSeries(con,"ch.fso.cpi", regex = T)
+```
+
+--
+
+```r
+# by stored sets
+keys &lt;- readTsSetKeys(con, "kof_indicators")$ts_key
+set_of_ts &lt;- readTimeSeries(con, keys)
+names(set_of_ts)
+```
+
+```
+## [1] "ch.kof.barometer"                      
+## [2] "ch.kof.inu.ng08.fx.q_ql_ass_bs.balance"
+```
+
+
+---
+
+### Access Beyond R: REST API
+
+![url](urlwindow.png)
+
+--
+
+
+```r
+library(kofdata)
+library(tstools)
+tsplot(get_time_series("ch.kof.barometer"))
+```
+
+![](timeseriesdb_user2019_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+
+---
+
+### 2. Comprehensive, Multi-Lingual Meta Information
+
+![fso](fso.png)
+
+---
+
+### 2. Comprehensive, Multi-Lingual Meta Information
+
+
+```r
+mi.en &lt;- readMetaInformation(con,
+                    c("ch.kof.inu.ng08.fx.q_ql_ass_bs.balance"),
+                             locale = "en")
+en &lt;- mi.en[[1]][!grepl("unlocal",names(mi.en[[1]]))]
+tail(en, 5)
+```
+
+```
+## $variable
+## [1] "business situation, assessment"
+## 
+## $bootstrap
+## [1] "none"
+## 
+## $frequency
+## [1] "frequency with maximum series length"
+## 
+## $level_ext
+## [1] "total sector (noga letter code C (MANUFACTURING))"
+## 
+## $variable_type
+## [1] "qualitative question with 3-point scale"
+```
+---
+
+### 2. Comprehensive, Multi-Lingual Meta Information
+
+
+```r
+mi.fr &lt;- readMetaInformation(con,
+                    c("ch.kof.inu.ng08.fx.q_ql_ass_bs.balance"),
+                             locale = "fr")
+fr &lt;- mi.fr[[1]][!grepl("unlocal",names(mi.fr[[1]]))]
+tail(fr, 5)
+```
+
+```
+## $variable
+## [1] "marche des affaires, résultat"
+## 
+## $bootstrap
+## [1] "aucun"
+## 
+## $frequency
+## [1] "fréquence avec longueur maximale de série"
+## 
+## $level_ext
+## [1] "ensemble du secteur (lettre noga C (INDUSTRIE MANUFACTURIÈRE))"
+## 
+## $variable_type
+## [1] "question qualitative avec échelle à 3 points"
+```
+
+
+---
+
+class: center, middle
+
+### 3. Revision Handling
+
+&gt; "I've found the best way to revise your own work is to pretend
+&gt; that somebody else wrote it and then to rip the living s*** out 
+&gt; of it."
+
+&gt; &lt;footer&gt;--- Don Roff, writer&lt;/footer&gt;
+
+
+---
+
+### 3. Revision Handling
+
+
+```r
+readTimeSeries(con, "ch.snb.lb.aus",
+               valid_on = "2015-04-23")
+```
+
+```
+## $ch.snb.lb.aus
+##          Qtr1     Qtr2     Qtr3     Qtr4
+## 2012 118900.5 122974.1 126521.6 128917.5
+## 2013 127160.5 140628.4 128375.0 130480.6
+## 2014 129416.6 129677.0 126731.2 129805.7
+## 2015 120786.3 118784.0                  
+## 
+## attr(,"class")
+## [1] "list"   "tslist"
+```
+
+--
+
+```r
+readTimeSeries(con, "ch.snb.lb.aus",
+               valid_on = "2015-07-23")
+```
+
+```
+## $ch.snb.lb.aus
+##          Qtr1     Qtr2     Qtr3     Qtr4
+## 2012 118900.5 122974.1 126521.6 128917.5
+## 2013 127160.5 140628.4 128375.0 130480.6
+## 2014 131104.1 131361.7 128411.1 136437.9
+## 2015 120903.9 119459.9 115835.0         
+## 
+## attr(,"class")
+## [1] "list"   "tslist"
+```
+
+
+---
+
+### 3. Revision Handling: All
+
+
+```r
+readAllVintages(con, "ch.snb.lb.aus")
+```
+
+
+![vintages](vintages2.png)
+
+
+---
+
+### Under the Hood: Relations (tables)
+
+![relations](relations.png)
+
+---
+
+### Under the Hood: Data Types
+
+![descriptions](desc2.png)
+
+--
+
+- hstore key value pair reduces number of records
+- validity is a range NOT a date
+- validity and indices implement non-overlapping constraint
+
+
+---
+
+### Under the Hood: Key Value Pairs (hstore)
+
+![kvp](kvp2.png)
+
+---
+
+## Summary
+
+--
+
+### 1. Long Term Data Conservation ⏳⏳⏳
+
+--
+
+### 2. Comprehensive Meta Descriptions 🇫🇷🇨🇭🇺🇸🇮🇹🇧🇷
+
+--
+
+### 3. Manage Revisions 🗄
+
+
+
+
+
+
+
+
+---
+
+### Outlook
+
+- plumbr based REST API 😴 ![plumbr](plumbr.png)
+- Row Level Security based access management (time series level) 🚣🔐
+- explore big data 🔎💾💾💾💾💾💾💾💾💾💾💾💾💾
+
+
+
+
+
+
+
+
+
+
+### Feedback?
+
+![twitter](twitter.png) @whatsgoodio
+
+![github](github.png) https://github.com/mbannert/timeseriesdb
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

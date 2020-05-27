@@ -1,0 +1,112 @@
+<html>
+<head>
+	<style type="text/css">
+	#rectangular{
+		width:200px;
+		height:200px;
+		background-color: #FF0000;
+	}
+
+	#output{
+		width:800px;
+		height: 600px;
+		border: 1px solid;
+
+	}
+
+
+
+
+	</style>
+<link href="dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="jumbotron.css" rel="stylesheet">
+<head/>
+<body>
+
+<div class="container">
+	<div class="jumbotron">
+	<h1>Are you nervous?</h1>
+	<h2>Follow the outline of the square.</h2>
+	<img src="square.svg">
+</div>
+
+<center>
+<button id="success" type="button" class="btn btn-sm btn-success">Success</button>
+<button id="reset" type="button" class="btn btn-sm btn-danger">RESET</button>
+<br />
+<br />
+<div id ="coords">X: ?, Y: ?</div>
+
+<div>
+	<textarea id="output" style="width: 580px; height: 150px; overflow:auto; resize:none;">
+	</textarea>
+</div>
+<button id="send2server" type="button" class="btn btn-sm btn-success">Send to server</button>
+
+</center>
+
+
+</div>
+
+
+
+
+
+ <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+
+
+$(".jumbotron").mousemove(function(e) {
+    coordX = e.pageX;
+    coordY = e.pageY;
+
+    $("#coords").text("X: " + coordX + ", Y: " + coordY);
+
+    recordCoords();
+});
+
+var $dict = [];
+
+function recordCoords() {
+	
+        $dict.push({
+        	X : coordX,
+        	Y : coordY
+        });
+}
+  
+
+$( "#reset" ).click(function() {
+
+ $dict = [];
+ $("#output").text("");
+
+
+});
+
+
+
+
+$( "#success" ).click(function() {
+ var outvar = JSON.stringify($dict);
+ $("#output").text("Copy and paste this JSON string to a file \n" + outvar);
+});
+
+
+
+$( "#send2server" ).click(function() {
+
+$.ajax({
+		type: "POST",
+        url: "test.py",
+        data: JSON.stringify($dict)
+    });	
+
+});
+
+
+
+</script>
+
+</body>
+</html>
