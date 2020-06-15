@@ -1,0 +1,108 @@
+---
+title: |
+  R alongside Airflow, Docker
+  <h1>and Gitlab CI</h1>
+subtitle: "R in Production"
+author: "@whatsgoodio"
+institute: "KOF, ETH Zurich"
+date: "2020-06-18"
+output:
+  xaringan::moon_reader:
+    css: ["robot-fonts","more.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+## Outline
+
+- Components
+- Workflow Example
+- Is R Good in Production?
+
+
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+---
+
+## What is Production?
+
+> Repeated (regular) runs of the same task resulting in pre-defined,
+quality controlled result. 
+>
+> `r tufte::quote_footer('--- KOF definition of production')`
+
+---
+
+## Main Components: Docker Containers
+
+
+---
+
+## Main Components: Gitlab CI
+
+---
+
+## Main Components: Apache Airflow
+
+---
+
+## An Example Workflow: Sourcing Data (ETL)
+
+---
+
+## Step-by-Step
+
+---
+
+## Directed Acyclic Graphs (DAG)
+
+---
+
+## The Role of R
+
+---
+
+## Is R Good at Production ? 
+
+---
+
+## R Interfaces Well
+
+---
+
+## R Runs on any Major OS
+
+---
+
+## Rich and Free Ecosystem
+
+--- 
+
+## R is Inclusive
+
+---
+
+## But It's a Dependency Nightmare, Isn't it? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

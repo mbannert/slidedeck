@@ -1,0 +1,60 @@
+body {
+    font-family: 'Open Sans', 'Avenir Next', 'Helvetica Neue', 'Helvetica', sans-serif;
+    font-weight: 400;
+    color: #222;
+}
+.remark-slide-number {
+  display: none;
+}
+
+.title-slide  {
+  background-color:#fff;
+  color:#f1f1f1;
+  text-align: left !important;
+  background-image: url(cover.jpg);
+  background-size:46%;
+  background-position:640px 98px;
+}
+
+
+
+.title-slide h1{
+  color:#525f7f;
+}
+
+
+.title-slide h2 {
+    color:#525f7f;
+}
+
+.title-slide h3 {
+  color:#525f7f;
+}
+
+
+.remark-slide-content h3 {
+    font-size: 24px;
+}
+
+
+.remark-slide-content h2 {
+    font-size: 37px;
+}
+
+
+
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+.pull-right ~ p {
+  clear: both;
+}
+
+
+
+
