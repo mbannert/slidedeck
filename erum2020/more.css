@@ -32,6 +32,12 @@ body {
 }
 
 
+.prod {
+  background-image: url(colored_factory.jpg);
+  background-size:46%;
+  background-position:640px 98px;
+}
+
 .remark-slide-content h3 {
     font-size: 24px;
 }

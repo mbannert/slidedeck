@@ -1,7 +1,7 @@
 ---
 title: |
-  R alongside Airflow, Docker
-  <h1>and Gitlab CI</h1>
+  R alongside Airflow, 
+  <h1>Docker and Gitlab CI</h1>
 subtitle: "R in Production"
 author: "@whatsgoodio"
 institute: "KOF, ETH Zurich"
@@ -18,11 +18,21 @@ output:
       beforeInit: "https://platform.twitter.com/widgets.js"
 ---
 
-## Outline
+class: prod
 
-- Components
-- Workflow Example
-- Is R Good in Production?
+## What is Production?
+
+
+
+.pull-left[
+> Repeated (regular) runs of the same task resulting in a pre-defined,
+quality controlled result. 
+>
+> `r tufte::quote_footer('--- KOF definition of production')`
+]
+
+
+
 
 
 
@@ -32,16 +42,13 @@ options(htmltools.dir.version = FALSE)
 ```
 ---
 
-## What is Production?
 
-> Repeated (regular) runs of the same task resulting in pre-defined,
-quality controlled result. 
->
-> `r tufte::quote_footer('--- KOF definition of production')`
 
 ---
 
-## Main Components: Docker Containers
+## Main Components: Docker Containers  {#nextsteps .emphasized}
+
+this and that.
 
 
 ---
