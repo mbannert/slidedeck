@@ -31,6 +31,11 @@ class: prod
 
 
 .pull-left[
+
+&lt;/br&gt;
+&lt;/br&gt;
+
+
 &gt; Repeated (regular) runs of the same task resulting in a pre-defined,
 quality controlled result. 
 &gt;
@@ -40,68 +45,416 @@ quality controlled result.
 
 
 
+---
 
+## Docker in One Slide
 
+- Single purpose, application focused virtualization
 
+- Images are blueprints for containers
+
+- Images live in registries such as dockerhub.com
+
+- Docker files are text based configs from which images are created
+
+- Images can be stacked, so we can build on existing images. 
 
 ---
 
+## Main Components: Docker Containers  
 
+.pull-left[
 
----
+permanent containers: 
 
-## Main Components: Docker Containers  {#nextsteps .emphasized}
+- PostgreSQL
+- Apache Airflow
+- miniCRAN
+- custom docker registry
+- APIs (plumber, servr, express.io)
 
-this and that.
+non-permanent containers
+
+- a universal base image
+- task specific images
+
+]
 
 
 ---
 
 ## Main Components: Gitlab CI
 
+.pull-left[
+
+
+on push to default branch
+
+- build (R) packages 
+- push to miniCRAN
+- deploy to servers
+- push files to docker host / volumes (rsync)
+- (rebuild docker images)
+
+]
+
+
+
 ---
+
+## Main Components: Gitlab CI
+
+.pull-left[
+
+
+on push to default branch
+
+- build (R) packages 
+- push to miniCRAN
+- deploy to servers
+- push files to docker host / volumes (rsync)
+- (rebuild docker images)
+
+]
+
+.pull-right[
+
+.gitlab-ci.yaml
+
+```
+
+[...]
+
+stages:
+  - buildncheck
+  - kran
+  - deploy
+
+check:
+  image: rocker/tidyverse:3.6.0
+  stage: buildncheck
+  artifacts:
+    untracked: true
+  script:
+    # we don't need it and it causes a hidden file NOTE
+    - rm .gitlab-ci.yml 
+    - R -e 'devtools::install(".", repos = "miniCRAN")'
+    - R -e 'devtools::check(error_on = "error")' 
+    - R CMD build . --no-build-vignettes --no-manual
+
+[...]
+
+- ssh -t gitlabci@someserver.com 'sudo /usr/bin/R -e \\
+  "install.packages(\"thatpack\", repos = \"miniCRAN\")"'
+
+
+```
+
+
+]
+
+
+---
+
+
+
 
 ## Main Components: Apache Airflow
 
+
+.pull-left[
+
+- SO questions tagged airflow: 4K+
+- workflow scheduler
+- monitor / overview dashboard
+- can trigger processes locally, on VMs, docker, Kubernetes etc.
+
+
+]
+
+.pull-right[
+
+&lt;img src="airflow_screenshot.png" width="450" /&gt;
+
+]
+
 ---
 
-## An Example Workflow: Sourcing Data (ETL)
+## An Example Workflow: Sourcing Data (ETL) 
 
----
+&lt;/br&gt;
+&lt;/br&gt;
 
-## Step-by-Step
+.center[
+&gt; Gather data from various public sources, &lt;/br&gt;
+&gt; transform into homogeneous time series format, &lt;/br&gt;
+&gt; read into PostgreSQL database.&lt;/br&gt;
+&gt; &lt;footer&gt;--- the swissdata project in a nutshell.&lt;/footer&gt;
+
+]
+
 
 ---
 
 ## Directed Acyclic Graphs (DAG)
 
+.pull-left[
+
+&lt;img src="swissdata_af.png" width="450" /&gt;
+
+]
+
+.pull-right[
+
+```python
+
+[...]
+
+dag = DAG('swissdata', description='Run swissdata',
+          schedule_interval = '0 9,17 * * *',
+          default_args = default_args, catchup=False)
+
+with dag:
+    run_swissdata = DockerOperator(
+        task_id = 'run_swissdata',
+        image = 'some-docker-registry.ch/swissdata:0.1.0',
+        api_version = 'auto',
+        auto_remove = True,
+        force_pull = True,
+        volumes = [
+            'swissdata-output:/output'
+        ],
+        docker_url = "unix:///var/run/docker.sock"
+    )
+
+    source_swissdata = DockerOperator(
+        task_id = 'source_swissdata',
+        image = 'some-docker-registry.ch/kofbase:0.1.0',
+        user='some-base-user',
+        api_version = 'auto',
+        auto_remove = True,
+        force_pull = True,
+        volumes = [
+            'swissdata-output:/swissdata',
+            'kofbase-tasks:/tasks'
+        ],
+        docker_url = 'unix:///var/run/docker.sock',
+        environment = {
+            'PG_PASSWORD': pg_password
+        },
+        command = 'source_swissdata' 
+    )
+
+    postprocess_swissdata = DockerOperator(
+
+    ...
+
+    )
+
+run_swissdata.set_downstream(source_swissdata)
+source_swissdata.set_downstream(postprocess_swissdata)
+
+
+
+```
+
+
+]
+
+
 ---
 
-## The Role of R
+## Task Specific Image
+
+
+.py-large[
+```python
+
+run_swissdata = DockerOperator(
+        task_id = 'run_swissdata',
+        image = 'some-docker-registry.ch/swissdata:0.1.0',
+        api_version = 'auto',
+        auto_remove = True,
+        force_pull = True,
+        volumes = [
+            'swissdata-output:/output'
+        ],
+        docker_url = "unix:///var/run/docker.sock"
+    )
+
+```
+
+]
 
 ---
 
-## Is R Good at Production ? 
+## Standard Image and a Task File
+
+
+.py-large[
+```python
+
+source_swissdata = DockerOperator(
+        task_id = 'source_swissdata',
+        image = 'some-docker-registry.ch/kofbase:0.1.0',
+        user='some-base-user',
+        api_version = 'auto',
+        auto_remove = True,
+        force_pull = True,
+        volumes = [
+            'swissdata-output:/swissdata',
+            'kofbase-tasks:/tasks'
+        ],
+        docker_url = 'unix:///var/run/docker.sock',
+        environment = {
+            'PG_PASSWORD': pg_password
+        },
+        command = 'source_swissdata' 
+    )
+```
+
+]
 
 ---
 
-## R Interfaces Well
+## The Role of R 
+
+.pull-left[
+
+### What Does R Do in This?
+
+- miniCRAN + R packages take care of dependencies
+- Downloading, reading and processing data using packages such as
+_{readxl}_, _{httr}_, _{rvest}_, _{xml2}_, _{jsonlite}_,
+_{pxR}_, _{tsbox}_, _{yaml}_, ... 
+- R is used as database interface layer _{timeseriesdb}_
+
+
+]
+
 
 ---
 
-## R Runs on any Major OS
+## The Role of R 
+
+.pull-left[
+
+### What Does R Do in This?
+
+- miniCRAN + R packages take care of dependencies
+- Downloading, reading and processing data using packages such as
+_{readxl}_, _{httr}_, _{rvest}_, _{xml2}_, _{jsonlite}_,
+_{pxR}_, _{tsbox}_, _{yaml}_, ... 
+- R is used as database interface layer _{timeseriesdb}_
+
+
+]
+
+.pull-right[
+
+### Is R any Good at This?
+
+
+]
 
 ---
 
-## Rich and Free Ecosystem
+## The Role of R 
 
---- 
+.pull-left[
 
-## R is Inclusive
+### What Does R Do in This?
+
+- miniCRAN + R packages take care of dependencies
+- Downloading, reading and processing data using packages such as
+_{readxl}_, _{httr}_, _{rvest}_, _{xml2}_, _{jsonlite}_,
+_{pxR}_, _{tsbox}_, _{yaml}_, ... 
+- R is used as database interface layer _{timeseriesdb}_
+
+
+]
+
+.pull-right[
+
+### Is R any Good at This?
+
+- dependencies are managed reasonably well, 
+weaknesses are mitigated by docker
+
+
+
+]
 
 ---
 
-## But It's a Dependency Nightmare, Isn't it?
+## The Role of R 
+
+.pull-left[
+
+### What Does R Do in This?
+
+- miniCRAN + R packages take care of dependencies
+- Downloading, reading and processing data using packages such as
+_{readxl}_, _{httr}_, _{rvest}_, _{xml2}_, _{jsonlite}_,
+_{pxR}_, _{tsbox}_, _{yaml}_, ... 
+- R is used as database interface layer _{timeseriesdb}_
+
+
+]
+
+.pull-right[
+
+### Is R any Good at This?
+
+- dependencies are managed reasonably well, 
+weaknesses are mitigated by docker
+
+- R interfaces incredibly well, there is an 
+R package for everything (15K+ and counting). 
+
+
+]
+
+---
+
+## The Role of R 
+
+.pull-left[
+
+### What Does R Do in This?
+
+- miniCRAN + R packages take care of dependencies
+- Downloading, reading and processing data using packages such as
+_{readxl}_, _{httr}_, _{rvest}_, _{xml2}_, _{jsonlite}_,
+_{pxR}_, _{tsbox}_, _{yaml}_, ... 
+- R is used as database interface layer _{timeseriesdb}_
+
+
+]
+
+.pull-right[
+
+### Is R any Good at This?
+
+- dependencies are managed reasonably well, 
+weaknesses are mitigated by docker
+
+- R interfaces incredibly well, there is an 
+R package for everything (15K+ and counting). 
+
+- R is inclusive: it's interpreted. It runs on any major OS. Amazing resources 
+to reach carpentry level. It's free. 
+
+]
+
+---
+
+## Resources
+
+- slides: github
+- rendered slides: netlify
+- Rocker Project
+- Apache Airflow
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
