@@ -461,7 +461,7 @@ class: thanks
 
 ## Resources
 
-- [https://github.com/mbannert/slidedeck/erum2020 (Slides)](https://github.com/mbannert/slidedeck/tree/master/erum2020)
+- [Slides (Github)](https://github.com/mbannert/slidedeck/tree/master/erum2020)
 - [https://erum2020-slides.netlify.app/ (rendered slides)](https://erum2020-slides.netlify.app/)
 - [Rocker Project](https://www.rocker-project.org/)
 - [Apache Airflow](https://airflow.apache.org/) 
