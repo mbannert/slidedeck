@@ -1,7 +1,7 @@
 body {
     font-family: 'Open Sans', 'Avenir Next', 'Helvetica Neue', 'Helvetica', sans-serif;
     font-weight: 400;
-    color: #222;
+    color: #003052;
 }
 .remark-slide-number {
   display: none;
@@ -16,6 +16,11 @@ body {
   background-position:640px 98px;
 }
 
+
+h1, h2, h3{
+
+  color:#525f7f;
+}
 
 
 .title-slide h1{
@@ -34,7 +39,6 @@ body {
 
 footer {
   font-size: 0.6em;
-  text-align: right;
 }
 
 .center2 {
@@ -51,6 +55,28 @@ footer {
   background-size:46%;
   background-position:640px 98px;
 }
+
+.thanks {
+  background-image: url(thanks.jpg);
+  background-size:35%;
+  background-position:640px 98px;
+}
+
+
+.airflow {
+  background-image: url(captainairflow.jpg);
+  background-size:12%;
+  background-position:25px 245px;
+}
+
+
+.dockers {
+  background-image: url(dockers.jpg);
+  background-size:46%;
+  background-position:580px 100px;
+}
+
+
 
 .python {
   font-size:0.5em;

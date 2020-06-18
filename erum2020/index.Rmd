@@ -57,6 +57,8 @@ options(htmltools.dir.version = FALSE)
 
 ---
 
+class: dockers
+
 ## Main Components: Docker Containers  
 
 .pull-left[
@@ -153,12 +155,13 @@ check:
 ---
 
 
-
+class: airflow
 
 ## Main Components: Apache Airflow
 
 
 .pull-left[
+
 
 - SO questions tagged airflow: 4K+
 - workflow scheduler
@@ -166,13 +169,18 @@ check:
 - can trigger processes locally, on VMs, docker, Kubernetes etc.
 
 
+
 ]
 
 .pull-right[
 
+
 ```{r echo=FALSE, out.width=450}
 knitr::include_graphics("airflow_screenshot.png")
 ```
+
+
+
 
 ]
 
@@ -449,14 +457,19 @@ to reach carpentry level. It's free.
 
 ---
 
+class: thanks
+
 ## Resources
 
-- slides: github
-- rendered slides: netlify
-- Rocker Project
-- Apache Airflow 
-- Apache Airflow Summit
-- uRos: R in Official Statistics  (Vienna)
+- [https://github.com/mbannert/slidedeck/erum2020 (Slides)](https://github.com/mbannert/slidedeck/tree/master/erum2020)
+- [https://erum2020-slides.netlify.app/ (rendered slides)](https://erum2020-slides.netlify.app/)
+- [Rocker Project](https://www.rocker-project.org/)
+- [Apache Airflow](https://airflow.apache.org/) 
+- [Apache Airflow Summit](https://airflowsummit.org/)
+- [uRos: R in Official Statistics](https://r-project.ro/conference2020.html)
+- [miniCRAN](https://cran.r-project.org/web/packages/miniCRAN/index.html)
+- [gitlab CI](https://docs.gitlab.com/ee/ci/)
+- [@whatsgoodio (chirp, chirp)](https://twitter.com/whatsgoodio)
 
 
 
